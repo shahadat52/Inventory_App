@@ -1,9 +1,31 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { AuthContext } from "../../Contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { saveUserData } from "../../Hooks/saveUserData";
+
 
 const Login = () => {
-    const { register, handleSubmit } = useForm()
+    const { loginWithEmailAndPassword } = useContext(AuthContext)
+    const { register, handleSubmit, reset } = useForm()
+    const navigate = useNavigate()
+
     const handleLogin = (data) => {
         console.log(data);
+        loginWithEmailAndPassword(data.email, data.password)
+            .then((res) => {
+                console.log(res);
+                // saveUserData(data.email, data.password)
+                alert("alhamdulillah login")
+                navigate('/dashboard')
+            })
+            .catch((err) => {
+                console.log(err);
+                reset()
+            })
+
+
+
     }
     return (
         <section>

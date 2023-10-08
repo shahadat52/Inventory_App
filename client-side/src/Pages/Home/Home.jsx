@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import banner from '../../assets/banner.jpg';
+import { useContext } from "react";
+import { AuthContext } from "../../Contexts/AuthContext";
 
 const Home = () => {
+    // const { user } = useContext(AuthContext)
+
+
     return (
         <section className="bg-primary min-h-[91vh] ">
             <div className="grid grid-cols-2 justify-center py-20 items-center gap-5">
@@ -9,8 +14,8 @@ const Home = () => {
                 <div className="text-start">
                     <h2 className="text-5xl font-bold">Inventory and stock management <br /> system</h2>
                     <p >Inventory system to control and manage products in the warehouse in real time and integrated to make it easier to develope your business</p>
-                    <p>
-                        <Link to="#" className="border-2 p-2 text-black">Free Trial 1 month</Link>
+                    <p className="my-2">
+                        <Link to="#" className="border-2  text-black">Free Trial 1 month</Link>
                     </p>
                     <div className="flex">
                         <div>
