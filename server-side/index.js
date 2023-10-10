@@ -39,18 +39,16 @@ async function run() {
         })
 
         // sending token to client api
-        app.get("/jwt", async (req, res) => {
-            console.log(process.env.ACCESS_TOKEN);
+        app.get('/jwt', async (req, res) => {
             const email = req.query.email;
-            console.log(email);
             const query = { email: email };
             const user = await usersCollection.findOne(query);
             if (user) {
-                const token = jwt.sign({ email }, '515c766299ddcfa000535801e86294d2ddcd1865845100743693f9720f68db49c16ecb7af46a046593ab7186115ad7bf8197c411732ea1ef4cb3e7f751b0d660', { expiresIn: '1h' });
+                const token = jwt.sign({ email }, process.env.ACCESS_TOKEN, { expiresIn: '1h' });
                 res.send({ accessToken: token })
+            } else {
+                res.status(403).send({ accessToken: "" })
             }
-            res.status(403).send({ accessToken: "" })
-
         })
     }
     catch (error) {
@@ -60,9 +58,7 @@ async function run() {
 
 }
 run().catch((error) => console.log(error))
-console.log(process.env.USER_ID);
-console.log(process.env.DB_USER);
-console.log(process.env.ACCESS_TOKEN);
+
 
 app.get('/', (req, res) => {
     res.send("stockSage server is running")

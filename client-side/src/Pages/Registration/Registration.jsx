@@ -1,23 +1,39 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Contexts/AuthContext";
-import { saveUserData } from "../../Hooks/saveUserData";
+// import { useNavigate } from "react-router-dom";
+import { useToken } from "../../Hooks/useToken";
 import { useNavigate } from "react-router-dom";
+
 
 const Registration = () => {
     const { createUser } = useContext(AuthContext)
     const { register, handleSubmit, formState: { errors }, reset } = useForm()
+    const [singUpEmail, setSignUpEmail] = useState('')
+    const [token] = useToken(singUpEmail)
     const navigate = useNavigate()
+
+
+    useEffect(() => {
+        if (token) {
+            console.log(token);
+            console.log('alhamdulillah token set successful');
+            navigate('/')
+        }
+    }, [token])
+
 
 
     const handleRegistration = (data) => {
         console.log(data);
         createUser(data.email, data.password)
             .then((res) => {
-                console.log(res);
+                const email = res.user.email
+                console.log(email);
                 saveUserData(data.email, data.password, data.name)
-                reset()
-                navigate('/')
+
+                // reset()
+                // navigate('/')
             })
             .catch((err) => {
                 console.log(err);
@@ -26,22 +42,23 @@ const Registration = () => {
     }
 
     // User info send to DB
-    // const saveUserData = (email, password, name) => {
-    //     const userData = { email, password, name };
-    //     fetch(`${import.meta.env.VITE_SERVER}/users`, {
-    //         method: "POST",
-    //         headers: {
-    //             'content-type': 'application/json'
-    //         },
-    //         body: JSON.stringify(userData)
-    //     })
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             console.log(data);
-    //             alert("alhamdulillah user info saved successful")
-    //             reset()
-    //         })
-    // }
+    const saveUserData = (email, password, name) => {
+        const userData = { email, password, name };
+        fetch(`${import.meta.env.VITE_SERVER}/users`, {
+            method: "POST",
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                setSignUpEmail(email)
+                alert("alhamdulillah user info saved successful")
+                reset()
+            })
+    }
     return (
         <section>
             <div className="flex justify-center min-h-[80%] py-auto bg-gradient-to-t from-cyan-400 to-indigo-500 ">

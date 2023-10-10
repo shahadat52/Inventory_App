@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { saveUserData } from "../../Hooks/saveUserData";
 
 
 const Login = () => {
